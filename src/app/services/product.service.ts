@@ -9,32 +9,33 @@ import { map } from 'rxjs/operators';
 })
 export class ProductService {
 
-  private baseUrl = "http://localhost:8080/api/products";
+  private baseUrl = "http://localhost:8080";
 
   constructor(private httpClient: HttpClient) { }
 
   //returns an observble; 
   //map the Json data from Spring Data REST to Product array
-  getProductList(): Observable<Product[]>{
-    return this.httpClient.get<GetResponse>(this.baseUrl).pipe(
-      map(response => response._embedded.products)
-    );
-  }
+  getProductList(theCategoryId: number): Observable<Product[]>{
 
-  /**
-   * if we have a custom controller class at backend side,
-   * get product list would be like below
-   * getProductList(): Observable<Product[]>{
-    return this.httpClient.get<Product[]>(this.baseUrl)
+    // need to build URL based on category id
+    //const searchUrl = `${this.baseUrl}/api/products/search/findByCategoryId?id=${theCategoryId}`;
+    const searchUrl = `${this.baseUrl}/api2/products?id=${theCategoryId}`;
+
+    return this.httpClient.get<GetResponse>(searchUrl).pipe(
+      map(response => response.content)
     );
+
+    //return this.httpClient.get<GetResponse>(searchUrl).pipe(
+    //  map(response => response._embedded.products)
+    //);
   }
-   */
   
 }
 
-//unwraps the JSON from Spring Data REST _embedded entry
-interface GetResponse{
-  _embedded: {
-    products: Product[];
-  } 
+//unwraps the JSON from Spring Data REST content entry
+interface GetResponse{  
+   /* _embedded:{
+      products: Product[];
+    }*/
+    content:Product[];
 }
