@@ -22,14 +22,14 @@ export class CartStatusComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.storage.retrieve('totalPrice') == undefined ){
+    if(this.storage.retrieve('totalPrice') === undefined ){
       this.totalPrice = 0.00;
     }
     else {
       this.totalPrice = this.storage.retrieve('totalPrice');
     }
 
-    if(this.storage.retrieve('totalQuantity') == undefined ){
+    if(this.storage.retrieve('totalQuantity') === undefined ){
       this.totalQuantity = 0.00;
     }
     else {
